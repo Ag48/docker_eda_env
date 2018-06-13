@@ -12,8 +12,8 @@ ARG path_install_modelsim="/eda/intelFPGA/${version_modelsim}"
 
 RUN yum update -y
 RUN \rm /etc/localtime; ln -s /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
-
-RUN useradd -c 'for eda test' -p I1oveEDA -s /bin/bash -d /home/eda eda
+RUN useradd -c 'for eda test' -s /bin/bash -d /home/eda eda
+RUN echo 'eda:I1oveEDA' |chpasswd
 RUN echo "User 'eda' has generated successfully" 
 # apply packages
 RUN yum install -y epel-release wget openssh-server
@@ -44,3 +44,4 @@ RUN echo "ModelSim has installed successflly"
 ## set modelsim's path to PATH
 RUN echo "export PATH=${PATH}:/eda/intelFPGA/16.0/modelsim_ase/bin; echo 'set vsim path to PATH'" >> /etc/bashrc; source /etc/bashrc; which vsim
 CMD echo "Now running..."
+RUN /etc/rc.d/init/sshd start
